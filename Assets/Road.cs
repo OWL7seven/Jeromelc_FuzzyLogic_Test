@@ -5,10 +5,10 @@ using UnityEngine;
 public class Road : MonoBehaviour
 {
     [SerializeField]
-    private MeshCollider meshCollider;
+    private BoxCollider Collider;
 
-    public void Start()
+    public BoxCollider GetCollider()
     {
-        meshCollider = this.GetComponentInChildren<MeshCollider>();
+        return Collider;
     }
 }

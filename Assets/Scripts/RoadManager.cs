@@ -67,21 +67,28 @@ public class RoadManager : MonoBehaviour
 
         //Create one perfect block
         GameObject block = new GameObject();
-        //Top section
-        for (int k = 0; k < blocksWidth - 1; k++)
-        {
-            Road road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
-            road.transform.localPosition = new Vector3(k * blockSize, 0, 0);
-            roads.Add(road);
 
-        }
         //Bottom section
         for (int k = 0; k < blocksWidth - 1; k++)
         {
             Road road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
             road.transform.localPosition = new Vector3(blockSize + k * blockSize, 0, (blocksHeight - 1) * -blockSize);
-            roads.Add(road);
+
+            //if first block
+            if (k == 0)
+            {
+               
+            }
+
+            //if last block
+            if (k == blocksHeight - 1)
+            {
+
+            }
+
+            roads.Add(road);           
         }
+
         //Left section
         for (int k = 0; k < blocksHeight - 1; k++)
         {
@@ -89,6 +96,27 @@ public class RoadManager : MonoBehaviour
             road.transform.localPosition = new Vector3(0, 0, -(k * blockSize));
             road.transform.Rotate(new Vector3(0, 90, 0));
             roads.Add(road);
+
+            //if first block
+            if (k == 0)
+            {
+
+            }
+
+            //if last block
+            if (k == blocksHeight - 1)
+            {
+
+            }
+        }
+      
+        //Top section
+        for (int k = 0; k < blocksWidth - 1; k++)
+        {
+            Road road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
+            road.transform.localPosition = new Vector3(k * blockSize, 0, 0);
+            roads.Add(road);
+
         }
         //Right section
         for (int k = 0; k < blocksHeight - 1; k++)
@@ -98,9 +126,12 @@ public class RoadManager : MonoBehaviour
             road.transform.Rotate(new Vector3(0, 90, 0));
             roads.Add(road);
         }
+   
+       
+      
 
         block.transform.position = position;
-        block.name = $"Block({position})";
+        block.name = $"Block({position.x},{position.z})";
         blocks.Add(block);
     }
 
