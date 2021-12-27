@@ -13,9 +13,9 @@ public class Road : MonoBehaviour
     }
 
     [SerializeField]
-    private BoxCollider Collider;
+    private MeshCollider Collider;
 
-    public BoxCollider GetCollider()
+    public MeshCollider GetCollider()
     {
         return Collider;
     }

@@ -81,16 +81,16 @@ public class RoadManager : MonoBehaviour
             //if first block
             if (k == 0)
             {
-                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
+                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Straight_Prefab"), block.transform);
             }
             //if last block
             else if (k == blocksHeight - 1)
             {
-                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
+                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Straight_Prefab"), block.transform);
             }
             else
             {
-                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
+                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Straight_Prefab"), block.transform);
             }
             if (road != null)
             {
@@ -107,7 +107,7 @@ public class RoadManager : MonoBehaviour
             //if first block
             if (k == 0)
             {
-                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
+                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Straight_Prefab"), block.transform);
                 road.transform.localPosition = new Vector3(0, 0, -(k * blockSize));
                 road.transform.Rotate(new Vector3(0, 90, 0));
             }
@@ -119,13 +119,13 @@ public class RoadManager : MonoBehaviour
                     //corner
                     if (currentBlockY == 0)
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Corner_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Corner_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3(0, 0, -(k * blockSize + 10));
                         road.transform.Rotate(new Vector3(0, 0, 0));
                     }
                     else
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_TJunction_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_TJunction_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3(0, 0, -(k * blockSize));
                         road.transform.Rotate(new Vector3(0, 90, 0));
                     }
@@ -134,13 +134,13 @@ public class RoadManager : MonoBehaviour
                 {
                     if (currentBlockY == 0)
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_TJunction_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_TJunction_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3(0, 0, -(k * blockSize +10));
                         road.transform.Rotate(new Vector3(0, 0, 0));
                     }
                     else
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Fourway_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Fourway_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3(0, 0, -(k * blockSize));
                         road.transform.Rotate(new Vector3(0, 90, 0));
                     }
@@ -149,7 +149,7 @@ public class RoadManager : MonoBehaviour
             }
             else 
             {
-                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
+                road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Straight_Prefab"), block.transform);
                 road.transform.localPosition = new Vector3(0, 0, -(k * blockSize));
                 road.transform.Rotate(new Vector3(0, 90, 0));
             }
@@ -171,13 +171,13 @@ public class RoadManager : MonoBehaviour
                 {
                     if (currentBlockX == 0)
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Corner_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Corner_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3(k * blockSize, 0, 10);
                         road.transform.Rotate(new Vector3(0, 90, 0));
                     }
                     else
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_TJunction_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_TJunction_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3(k * blockSize+10, 0, 10);
                         road.transform.Rotate(new Vector3(0, 180, 0));
                     }
@@ -186,13 +186,13 @@ public class RoadManager : MonoBehaviour
                 //if last block
                 else if (k == blocksWidth - 1)
                 {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Corner_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Corner_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3(k * blockSize + 10, 0, 10);
                         road.transform.Rotate(new Vector3(0, 180, 0));
                 }
                 else
                 {
-                    road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
+                    road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Straight_Prefab"), block.transform);
                     road.transform.localPosition = new Vector3(k * blockSize, 0, 0);
                 }
                 if (road != null)
@@ -215,19 +215,19 @@ public class RoadManager : MonoBehaviour
                 {
                     if (currentBlockY == 0)
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_TJunction_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_TJunction_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3((blocksWidth - 1) * blockSize+10, 0, -(k * blockSize+10) + blockSize);
                         road.transform.Rotate(new Vector3(0, 270, 0));
                     }
                     if (currentBlockY == blocksY - 1)
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Corner_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Corner_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3((blocksWidth - 1) * blockSize + 10, 0, -(k * blockSize) + blockSize);
                         road.transform.Rotate(new Vector3(0, 180, 0));
                     }
                     else
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_TJunction_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_TJunction_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3((blocksWidth - 1) * blockSize+10, 0, -(k * blockSize+10) + blockSize);
                         road.transform.Rotate(new Vector3(0, 270, 0));
                     }
@@ -237,7 +237,7 @@ public class RoadManager : MonoBehaviour
                 {
                     if (currentBlockY == 0)
                     {
-                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Corner_Prefab"), block.transform);
+                        road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Corner_Prefab"), block.transform);
                         road.transform.localPosition = new Vector3((blocksWidth - 1) * blockSize+10, 0, -(k * blockSize+10) + blockSize);
                         road.transform.Rotate(new Vector3(0, 270, 0));
                     }
@@ -248,7 +248,7 @@ public class RoadManager : MonoBehaviour
                 }
                 else
                 {
-                    road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Road_Straight_Prefab"), block.transform);
+                    road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Road_Straight_Prefab"), block.transform);
                     road.transform.localPosition = new Vector3((blocksWidth - 1) * blockSize, 0, -(k * blockSize) + blockSize);
                     road.transform.Rotate(new Vector3(0, 90, 0));
                 }
