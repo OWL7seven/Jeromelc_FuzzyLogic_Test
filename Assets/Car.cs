@@ -19,7 +19,7 @@ public class Car : MonoBehaviour
     [SerializeField]
     private Vector3 direction = new Vector3(0, 0, 1);
     [SerializeField]
-    private Vector3 directionOffset = new Vector3(0, 0.2f, 0);
+    private Vector3 directionOffset;
     [SerializeField]
     private float distance = 10;
     [SerializeField]
@@ -130,9 +130,9 @@ public class Car : MonoBehaviour
 
         // checking if car is infront to slow down or stop
         RaycastHit carHit;
-        if (Physics.Raycast(transform.position+ carRayOffset, transform.forward, out carHit, distance, layerMask))
+        if (Physics.Raycast(transform.position+ carRayOffset, transform.forward, out carHit, followingDistance, layerMask))
         {
-            Debug.DrawRay(transform.position+ carRayOffset, transform.forward * carHit.distance, Color.green);
+            Debug.DrawRay(transform.position+ carRayOffset, transform.forward * carHit.distance, Color.red);
             if (carHit.collider.gameObject.GetComponent<Car>() != null)
             {
                 if (currentCar != carHit.collider.gameObject.GetComponent<Car>())
@@ -140,6 +140,11 @@ public class Car : MonoBehaviour
                     currentCar = carHit.collider.gameObject.GetComponent<Car>();
                 }
             }
+        }
+        else
+        {
+            Debug.DrawRay(transform.position + carRayOffset, transform.forward * carHit.distance, Color.green);
+            currentCar = null;
         }
         if (currentCar != null)
         {
