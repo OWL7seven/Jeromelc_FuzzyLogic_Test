@@ -13,7 +13,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3222305029024082335, guid: 15abeb4f1d036944bb427f7eb3fd24d7, type: 3}
       propertyPath: m_Name
-      value: Junction Variant
+      value: Junction
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222305029024082335, guid: 15abeb4f1d036944bb427f7eb3fd24d7, type: 3}
+      propertyPath: m_TagString
+      value: Junction
       objectReference: {fileID: 0}
     - target: {fileID: 3729671514956328481, guid: 15abeb4f1d036944bb427f7eb3fd24d7, type: 3}
       propertyPath: m_RootOrder

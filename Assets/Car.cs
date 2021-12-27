@@ -13,6 +13,8 @@ public class Car : MonoBehaviour
     [SerializeField]
     private Road passRoad;
     [SerializeField]
+    private Car currentCar;
+    [SerializeField]
     private float speed = 10;
     [SerializeField]
     private Vector3 direction = new Vector3(0, 0, 1);
@@ -24,6 +26,16 @@ public class Car : MonoBehaviour
     private Vector3 rayDirection = new Vector3(0, -0.1f, 1);
     [SerializeField]
     private Vector3 rayOffset = new Vector3(0, 0, 0);
+    [SerializeField]
+    private float turnDistance = 1;
+    [SerializeField]
+    private float currentTurnDistance;
+    [SerializeField]
+    private float followingDistance = 1;
+    [SerializeField]
+    private Vector3 carRayOffset = new Vector3(0, 1, 0);
+    [SerializeField]
+    private bool debug;
 
     private void Start()
     {
@@ -31,46 +43,65 @@ public class Car : MonoBehaviour
         rigidbody = this.GetComponent<Rigidbody>();
     }
 
+    public void SetSpeed(float value)
+    {
+        speed = value;
+    }
+
     private void FixedUpdate()
     {
-
-        // Bit shift the index of the layer (8) to get a bit mask
         int layerMask = 1 << 8;
-
-        // This would cast rays only against colliders in layer 8.
-        // But instead we want to collide against everything except layer 8. The ~ operator does this, it inverts a bitmask.
         layerMask = ~layerMask;
+
         RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
         if (Physics.Raycast(transform.position + rayOffset, transform.TransformDirection(rayDirection), out hit, distance, layerMask))
         {
-            Debug.DrawRay(transform.position + rayOffset, transform.TransformDirection(rayDirection) * hit.distance, Color.yellow);
-            //Debug.Log("Did Hit");
+            if (debug)
+            {
+                Debug.DrawRay(transform.position + rayOffset, transform.TransformDirection(rayDirection) * hit.distance, Color.yellow);
+            }
             if (hit.collider.gameObject.GetComponent<Road>() != null)
             {
                 if (currentRoad != hit.collider.gameObject.GetComponent<Road>())
                 {
                     currentRoad = hit.collider.gameObject.GetComponent<Road>();
+                }
+            }
+        }
+        if (currentRoad != null)
+        {
+            currentTurnDistance = Vector3.Distance(currentRoad.transform.position, transform.position);
+            if (turnDistance > currentTurnDistance)
+            {
+                if (currentRoad != passRoad)
+                {
                     if (currentRoad.gameObject.tag == "TJunction")
                     {
-                       // transform.position = currentRoad.transform.position + directionOffset;
-                        transform.Rotate(0, 90, 0);
-                        currentRoad = null;
-                        if (direction == Vector3.right)
+                        // the road is facing towards Z
+                        // if the turning is facing the -Z axis of the road then 
+
+                        // so if you going in a left direction you allowed to continue or go forward direction.
+                        // if you going backwards compared to the Tjunction you can turn left of right
+                        // if going right then you can go forward or turn 
+
+                        // can only turn right or go straight
+                        if (direction == -currentRoad.transform.right)
                         {
-                            direction = Vector3.back;
+                            direction = currentRoad.transform.forward;
                         }
-                        else if (direction == Vector3.back)
+                        // can turn left and right
+                        else if (direction == -currentRoad.transform.forward)
                         {
-                            direction = Vector3.left;
+                            direction = currentRoad.transform.right;
                         }
-                        else if (direction == Vector3.left)
+                        // can turn left and straight
+                        else if (direction == currentRoad.transform.forward)
                         {
-                            direction = Vector3.forward;
+                            direction = -currentRoad.transform.right;
                         }
-                        else
+                        else if (direction == currentRoad.transform.right)
                         {
-                            direction = Vector3.right;
+                            direction = currentRoad.transform.forward;
                         }
                         passRoad = currentRoad;
                     }
@@ -79,28 +110,66 @@ public class Car : MonoBehaviour
                         direction = RandomDirection(direction);
                         passRoad = currentRoad;
                     }
+                    else if (currentRoad.gameObject.tag == "Corner")
+                    {
+                        // can only right
+                        if (direction == -currentRoad.transform.right)
+                        {
+                            direction = currentRoad.transform.forward;
+                        } 
+                        // can turn left
+                        else if (direction == -currentRoad.transform.forward)
+                        {
+                            direction = currentRoad.transform.right;
+                        }
+                        passRoad = currentRoad;                 
+                    }
                 }
             }
-            else
-            {
-                Debug.DrawRay(transform.position + rayOffset, transform.TransformDirection(rayDirection) * 1000, Color.white);
-                //Debug.Log("Did not Hit");
+        }
 
+        // checking if car is infront to slow down or stop
+        RaycastHit carHit;
+        if (Physics.Raycast(transform.position+ carRayOffset, transform.forward, out carHit, distance, layerMask))
+        {
+            Debug.DrawRay(transform.position+ carRayOffset, transform.forward * carHit.distance, Color.green);
+            if (carHit.collider.gameObject.GetComponent<Car>() != null)
+            {
+                if (currentCar != carHit.collider.gameObject.GetComponent<Car>())
+                {
+                    currentCar = carHit.collider.gameObject.GetComponent<Car>();
+                }
             }
         }
-        transform.position += direction * speed;
+        if (currentCar != null)
+        {
+            if (followingDistance > Vector3.Distance(currentCar.transform.position, this.transform.position))
+
+            {
+                transform.position += direction * speed;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 40f);
+            }
+        }
+        else
+        {
+            transform.position += direction * speed;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 40f);
+        }
     }
+
 
     private Vector3 RandomDirection(Vector3 currentDirection)
     {
-        int random = Random.Range(0, 3);
+        //checks if car is going in a certain direction
+        // if the car is going in that direction it can choose to go straight or turn into the allowed directions
+
+        int random = Random.Range(0, 4);      
 
         //left
         if (random == 0)
         {
-            if (currentDirection != Vector3.left)
+            if (currentDirection != Vector3.left && currentDirection != Vector3.right)
             {
-                transform.Rotate(0, Vector3.Angle(currentDirection, Vector3.left), 0);
                 return Vector3.left;
             }
             else
@@ -108,12 +177,11 @@ public class Car : MonoBehaviour
                 return currentDirection;
             }
         }
-        //Forward
+        //Forward - z axis - blue
         else if (random == 1)
         {
-            if (currentDirection != Vector3.forward)
+            if (currentDirection != Vector3.forward && currentDirection != Vector3.back)
             {
-                transform.Rotate(0, Vector3.Angle(currentDirection, Vector3.forward), 0);
                 return Vector3.forward;
             }
             else
@@ -121,12 +189,11 @@ public class Car : MonoBehaviour
                 return currentDirection;
             }
         }
-        //right
+        //right - x axis - red
         else if (random == 2)
         {
-            if (currentDirection != Vector3.right)
+            if (currentDirection != Vector3.right && currentDirection != Vector3.left)
             {
-                transform.Rotate(0, Vector3.Angle(currentDirection, Vector3.right), 0);
                 return Vector3.right;
             }
             else
@@ -137,9 +204,8 @@ public class Car : MonoBehaviour
         //back
         else if (random == 3)
         {
-            if (currentDirection != Vector3.back)
+            if (currentDirection != Vector3.back && currentDirection != Vector3.forward)
             {
-                transform.Rotate(0, Vector3.Angle(currentDirection, Vector3.back), 0);
                 return Vector3.back;
             }
             else
@@ -151,6 +217,7 @@ public class Car : MonoBehaviour
         return currentDirection;
     }
 
+    //removed for now
     /*
     void OnCollisionStay(Collision collisionInfo)
     {

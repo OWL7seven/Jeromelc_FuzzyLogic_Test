@@ -139,7 +139,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8774804481520570919}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3, y: 0.25, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9125005335621608026}
@@ -158,7 +158,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -191,9 +191,11 @@ MonoBehaviour:
   rigidbody: {fileID: 0}
   currentRoad: {fileID: 0}
   passRoad: {fileID: 0}
-  speed: 0.01
+  speed: 0.2
   direction: {x: 0, y: 0, z: 1}
-  directionOffset: {x: 0, y: 0.2, z: 0}
-  distance: 15
-  rayDirection: {x: 0, y: -0.2, z: 1}
+  directionOffset: {x: 0, y: 0, z: 0}
+  distance: 10
+  rayDirection: {x: 0, y: -1, z: 1}
   rayOffset: {x: 0, y: 0.5, z: 0}
+  turnDistance: 1
+  currentTurnDistance: 0
