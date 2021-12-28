@@ -17,6 +17,8 @@ public class Car : MonoBehaviour
     [SerializeField]
     private float speed = 10;
     [SerializeField]
+    private float turnSpeed = 50;
+    [SerializeField]
     private Vector3 direction = new Vector3(0, 0, 1);
     [SerializeField]
     private Vector3 directionOffset;
@@ -189,15 +191,53 @@ public class Car : MonoBehaviour
                             // can only right
                             if (direction == -currentRoad.transform.right)
                             {
+                                if (currentRoad.transform.right == Vector3.forward)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                                }
+                                //bottom x row
+                                else if (currentRoad.transform.right == Vector3.right)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                                }
+                                //Left Z row
+                                else if (currentRoad.transform.right == Vector3.back)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                                }
+                                //top x row
+                                else if (currentRoad.transform.right == Vector3.left)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                                }
                                 direction = currentRoad.transform.forward;
                             }
                             // can turn left
                             else if (direction == -currentRoad.transform.forward)
                             {
+                                if (currentRoad.transform.right == Vector3.forward)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                                }
+                                //bottom x row
+                                else if (currentRoad.transform.right == Vector3.right)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                                }
+                                //Left Z row
+                                else if (currentRoad.transform.right == Vector3.back)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                                }
+                                //top x row
+                                else if (currentRoad.transform.right == Vector3.left)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                                }
                                 direction = currentRoad.transform.right;
-                            }
+                            }                    
                             passRoad = currentRoad;
-                        }
+                        }                       
                     }
                 }
             }
@@ -234,13 +274,13 @@ public class Car : MonoBehaviour
 
                 {
                     transform.position += direction * speed;
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 40f);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * turnSpeed);
                 }
             }
             else
             {
                 transform.position += direction * speed;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 40f);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * turnSpeed);
             }
         }
     }
@@ -307,5 +347,42 @@ public class Car : MonoBehaviour
         }
 
         return currentDirection;
+    }
+
+    public void SetPosition()
+    {
+         if (currentRoad.gameObject.tag == "Straight")
+        {
+            // can only right
+            if (direction == -currentRoad.transform.forward)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                direction = -currentRoad.transform.right;
+            }
+            // can turn left
+            else if (direction == currentRoad.transform.forward)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                direction = currentRoad.transform.right;
+            }
+            // can turn left
+            else if (direction == currentRoad.transform.right)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                direction = currentRoad.transform.right;
+            }
+            // can turn left
+            else if (direction == -currentRoad.transform.right)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                direction = -currentRoad.transform.right;
+            }
+            passRoad = currentRoad;
+        }
+    }
+
+    public void SetRoad(Road road)
+    {
+        currentRoad = road;  
     }
 }

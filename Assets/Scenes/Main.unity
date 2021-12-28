@@ -752,8 +752,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a614b8a32c141f0499531d2793854c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnCount: 100
-  randomLocations: 0
+  cars: []
+  randomLocations: 1
+  carCount: 100
+  busCount: 10
+  truckCount: 10
 --- !u!1 &1395638000
 GameObject:
   m_ObjectHideFlags: 0
