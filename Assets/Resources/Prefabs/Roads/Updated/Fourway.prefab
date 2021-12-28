@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 99955159991464165, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+      propertyPath: timer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1128502875633980658, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
       propertyPath: m_Mesh
       value: 
