@@ -106,78 +106,23 @@ public class Car : MonoBehaviour
                             //coming from the right of the tjunction
                             if (direction == -currentRoad.transform.right)
                             {
-                                if (currentRoad.transform.right == Vector3.forward)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
-                                }
-                                //bottom x row
-                                else if (currentRoad.transform.right == Vector3.right)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
-                                }
-                                //Left Z row
-                                else if (currentRoad.transform.right == Vector3.back)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
-                                }
-                                //top x row
-                                else if (currentRoad.transform.right == Vector3.left)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
-                                }
+                                AddLaneOffset(false);
                                 direction = currentRoad.transform.forward;
                             }
-                            // can turn left and right
                             else if (direction == -currentRoad.transform.forward)
                             {
-                                //checking to see if the right of the road is facing in the direction of the global direction
-                                //going down x to turn left
-                                //right z row
-                                if (currentRoad.transform.right == Vector3.forward)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
-                                }
-                                //bottom x row
-                                else if (currentRoad.transform.right == Vector3.right)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
-                                }
-                                //Left Z row
-                                else if (currentRoad.transform.right == Vector3.back)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
-                                }
-                                //top x row
-                                else if (currentRoad.transform.right == Vector3.left)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
-                                }
-                                //transform.position = currentRoad.transform.position + new Vector3(1,0,0);
+                                AddLaneOffset(true);
                                 direction = currentRoad.transform.right;
                             }
-                            //coming from the left of the T junction
                             else if (direction == currentRoad.transform.right)
                             {
-                                if (currentRoad.transform.right == Vector3.forward)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
-                                }
-                                //bottom x row
-                                else if (currentRoad.transform.right == Vector3.right)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
-                                }
-                                //Left Z row
-                                else if (currentRoad.transform.right == Vector3.back)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
-                                }
-                                //top x row
-                                else if (currentRoad.transform.right == Vector3.left)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
-                                }
+                                AddLaneOffset(false);
                                 direction = currentRoad.transform.forward;
+                            }
+                            else if (direction == currentRoad.transform.forward)
+                            {
+                                AddLaneOffset(false);
+                                direction = -currentRoad.transform.right;
                             }
                             passRoad = currentRoad;
                         }
@@ -188,54 +133,26 @@ public class Car : MonoBehaviour
                         }
                         else if (currentRoad.gameObject.tag == "Corner")
                         {
-                            // can only right
                             if (direction == -currentRoad.transform.right)
                             {
-                                if (currentRoad.transform.right == Vector3.forward)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
-                                }
-                                //bottom x row
-                                else if (currentRoad.transform.right == Vector3.right)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
-                                }
-                                //Left Z row
-                                else if (currentRoad.transform.right == Vector3.back)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
-                                }
-                                //top x row
-                                else if (currentRoad.transform.right == Vector3.left)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
-                                }
+                                AddLaneOffset(false);
                                 direction = currentRoad.transform.forward;
                             }
-                            // can turn left
                             else if (direction == -currentRoad.transform.forward)
                             {
-                                if (currentRoad.transform.right == Vector3.forward)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
-                                }
-                                //bottom x row
-                                else if (currentRoad.transform.right == Vector3.right)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
-                                }
-                                //Left Z row
-                                else if (currentRoad.transform.right == Vector3.back)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
-                                }
-                                //top x row
-                                else if (currentRoad.transform.right == Vector3.left)
-                                {
-                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
-                                }
+                                AddLaneOffset(true);
                                 direction = currentRoad.transform.right;
-                            }                    
+                            }
+                            else if (direction == currentRoad.transform.right)
+                            {
+                                AddLaneOffset(false);
+                                direction = currentRoad.transform.forward;
+                            }
+                            else if (direction == currentRoad.transform.forward)
+                            {
+                                AddLaneOffset(false);
+                                direction = currentRoad.transform.right;
+                            }
                             passRoad = currentRoad;
                         }                       
                     }
@@ -285,6 +202,47 @@ public class Car : MonoBehaviour
         }
     }
 
+    private void AddLaneOffset(bool invert)
+    {
+        if (!invert)
+        {
+            if (currentRoad.transform.right == Vector3.forward)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+            }
+            else if (currentRoad.transform.right == Vector3.right)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+            }
+            else if (currentRoad.transform.right == Vector3.back)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+            }
+            else if (currentRoad.transform.right == Vector3.left)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+            }
+        }
+        else 
+        {
+            if (currentRoad.transform.right == Vector3.forward)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+            }
+            else if (currentRoad.transform.right == Vector3.right)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+            }
+            else if (currentRoad.transform.right == Vector3.back)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+            }
+            else if (currentRoad.transform.right == Vector3.left)
+            {
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+            }
+        }
+    }
 
     private Vector3 RandomDirection(Vector3 currentDirection)
     {

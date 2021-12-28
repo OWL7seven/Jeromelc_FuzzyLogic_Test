@@ -38,6 +38,26 @@ public class Road : MonoBehaviour
                 InvokeRepeating("AllowCarToProgress", 0, 1);
             }
         }
+        if (gameObject.tag == "TJunction")
+        {
+            cars.Add(car);
+            car.Stop(true);
+
+            if (!IsInvoking("AllowCarToProgress"))
+            {
+                InvokeRepeating("AllowCarToProgress", 0, 1);
+            }
+        }
+        if (gameObject.tag == "Zebra")
+        {
+            cars.Add(car);
+            car.Stop(true);
+
+            if (!IsInvoking("AllowCarToProgress"))
+            {
+                InvokeRepeating("AllowCarToProgress", 0, 1);
+            }
+        }
     }
 
     //Timer system that gives permission to cars in order to drive
