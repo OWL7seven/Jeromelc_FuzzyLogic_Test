@@ -5,7 +5,7 @@ using UnityEngine;
 public class Car : MonoBehaviour
 {
     [SerializeField]
-    private BoxCollider collider;
+    private MeshCollider collider;
     [SerializeField]
     private Rigidbody rigidbody;
     [SerializeField]
@@ -36,16 +36,23 @@ public class Car : MonoBehaviour
     private Vector3 carRayOffset = new Vector3(0, 1, 0);
     [SerializeField]
     private bool debug;
+    [SerializeField]
+    private bool stop;
 
-    private void Start()
+    private void Awake()
     {
-        collider = this.GetComponent<BoxCollider>();
+        collider = this.GetComponent<MeshCollider>();
         rigidbody = this.GetComponent<Rigidbody>();
     }
 
     public void SetSpeed(float value)
     {
         speed = value;
+    }
+
+    public void Stop(bool value)
+    {
+        stop = value;
     }
 
     private void FixedUpdate()
@@ -65,127 +72,136 @@ public class Car : MonoBehaviour
                 if (currentRoad != hit.collider.gameObject.GetComponent<Road>())
                 {
                     currentRoad = hit.collider.gameObject.GetComponent<Road>();
+                    if (currentRoad != passRoad)
+                    { 
+                        currentRoad.AddCar(this);
+                    }
                 }
             }
         }
-        if (currentRoad != null)
+        if (!stop)
         {
-            currentTurnDistance = Vector3.Distance(currentRoad.transform.position, transform.position);
-            if (turnDistance > currentTurnDistance)
+            if (currentRoad != null)
             {
-                if (currentRoad != passRoad)
+                currentTurnDistance = Vector3.Distance(currentRoad.transform.position, transform.position);
+                if (turnDistance > currentTurnDistance)
                 {
-                    if (currentRoad.gameObject.tag == "TJunction")
+                    if (currentRoad != passRoad)
                     {
-                        // the road is facing towards Z
-                        // if the turning is facing the -Z axis of the road then 
+                        //Used to control what the car does at each junction
+                        //A offset is added to keep the car on the left lane
+                        //A bool could be added to swap between left and right lanes
+                        if (currentRoad.gameObject.tag == "TJunction")
+                        {
+                            // the road is facing towards Z
+                            // if the turning is facing the -Z axis of the road then 
 
-                        // so if you going in a left direction you allowed to continue or go forward direction.
-                        // if you going backwards compared to the Tjunction you can turn left of right
-                        // if going right then you can go forward or turn 
+                            // so if you going in a left direction you allowed to continue or go forward direction.
+                            // if you going backwards compared to the Tjunction you can turn left of right
+                            // if going right then you can go forward or turn 
 
-                        // can only turn right or go straight
-                        //coming from the right of the tjunction
-                        if (direction == -currentRoad.transform.right)
-                        {
-                            if (currentRoad.transform.right == Vector3.forward)
+                            // can only turn right or go straight
+                            //coming from the right of the tjunction
+                            if (direction == -currentRoad.transform.right)
                             {
-                                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                                if (currentRoad.transform.right == Vector3.forward)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                                }
+                                //bottom x row
+                                else if (currentRoad.transform.right == Vector3.right)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                                }
+                                //Left Z row
+                                else if (currentRoad.transform.right == Vector3.back)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                                }
+                                //top x row
+                                else if (currentRoad.transform.right == Vector3.left)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                                }
+                                direction = currentRoad.transform.forward;
                             }
-                            //bottom x row
-                            else if (currentRoad.transform.right == Vector3.right)
+                            // can turn left and right
+                            else if (direction == -currentRoad.transform.forward)
                             {
-                                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                                //checking to see if the right of the road is facing in the direction of the global direction
+                                //going down x to turn left
+                                //right z row
+                                if (currentRoad.transform.right == Vector3.forward)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                                }
+                                //bottom x row
+                                else if (currentRoad.transform.right == Vector3.right)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                                }
+                                //Left Z row
+                                else if (currentRoad.transform.right == Vector3.back)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                                }
+                                //top x row
+                                else if (currentRoad.transform.right == Vector3.left)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                                }
+                                //transform.position = currentRoad.transform.position + new Vector3(1,0,0);
+                                direction = currentRoad.transform.right;
                             }
-                            //Left Z row
-                            else if (currentRoad.transform.right == Vector3.back)
+                            //coming from the left of the T junction
+                            else if (direction == currentRoad.transform.right)
                             {
-                                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                                if (currentRoad.transform.right == Vector3.forward)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                                }
+                                //bottom x row
+                                else if (currentRoad.transform.right == Vector3.right)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                                }
+                                //Left Z row
+                                else if (currentRoad.transform.right == Vector3.back)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                                }
+                                //top x row
+                                else if (currentRoad.transform.right == Vector3.left)
+                                {
+                                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                                }
+                                direction = currentRoad.transform.forward;
                             }
-                            //top x row
-                            else if (currentRoad.transform.right == Vector3.left)
-                            {
-                                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
-                            }
-                            direction = currentRoad.transform.forward;
+                            passRoad = currentRoad;
                         }
-                        // can turn left and right
-                        else if (direction == -currentRoad.transform.forward)
-                        {
-                            //checking to see if the right of the road is facing in the direction of the global direction
-                            //going down x to turn left
-                            //right z row
-                            if (currentRoad.transform.right == Vector3.forward)
-                            {
-                                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
-                            }
-                            //bottom x row
-                            else if (currentRoad.transform.right == Vector3.right)
-                            {
-                                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
-                            }
-                            //Left Z row
-                            else if (currentRoad.transform.right == Vector3.back)
-                            {
-                                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
-                            }
-                            //top x row
-                            else if (currentRoad.transform.right == Vector3.left)
-                            {
-                                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
-                            }
-                            //transform.position = currentRoad.transform.position + new Vector3(1,0,0);
-                            direction = currentRoad.transform.right;
+                        else if (currentRoad.gameObject.tag == "Fourway")
+                        { 
+                            direction = RandomDirection(direction);
+                            passRoad = currentRoad;
                         }
-                        //coming from the left of the T junction
-                        else if (direction == currentRoad.transform.right)
+                        else if (currentRoad.gameObject.tag == "Corner")
                         {
-                            if (currentRoad.transform.right == Vector3.forward)
+                            // can only right
+                            if (direction == -currentRoad.transform.right)
                             {
-                                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                                direction = currentRoad.transform.forward;
                             }
-                            //bottom x row
-                            else if (currentRoad.transform.right == Vector3.right)
+                            // can turn left
+                            else if (direction == -currentRoad.transform.forward)
                             {
-                                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                                direction = currentRoad.transform.right;
                             }
-                            //Left Z row
-                            else if (currentRoad.transform.right == Vector3.back)
-                            {
-                                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
-                            }
-                            //top x row
-                            else if (currentRoad.transform.right == Vector3.left)
-                            {
-                                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
-                            }
-                            direction = currentRoad.transform.forward;
+                            passRoad = currentRoad;
                         }
-                        passRoad = currentRoad;
-                    }
-                    else if (currentRoad.gameObject.tag == "Fourway")
-                    {
-                        direction = RandomDirection(direction);
-                        passRoad = currentRoad;
-                    }
-                    else if (currentRoad.gameObject.tag == "Corner")
-                    {
-                        // can only right
-                        if (direction == -currentRoad.transform.right)
-                        {
-                            direction = currentRoad.transform.forward;
-                        }
-                        // can turn left
-                        else if (direction == -currentRoad.transform.forward)
-                        {
-                            direction = currentRoad.transform.right;
-                        }
-                        passRoad = currentRoad;
                     }
                 }
             }
         }
-
         // checking if car is infront to slow down or stop
         RaycastHit carHit;
         if (Physics.Raycast(transform.position + carRayOffset, transform.forward, out carHit, followingDistance, layerMask))
@@ -210,19 +226,22 @@ public class Car : MonoBehaviour
             }
             currentCar = null;
         }
-        if (currentCar != null)
+        if (!stop)
         {
-            if (followingDistance > Vector3.Distance(currentCar.transform.position, this.transform.position))
+            if (currentCar != null)
+            {
+                if (followingDistance > Vector3.Distance(currentCar.transform.position, this.transform.position))
 
+                {
+                    transform.position += direction * speed;
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 40f);
+                }
+            }
+            else
             {
                 transform.position += direction * speed;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 40f);
             }
-        }
-        else
-        {
-            transform.position += direction * speed;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * 40f);
         }
     }
 
@@ -289,26 +308,4 @@ public class Car : MonoBehaviour
 
         return currentDirection;
     }
-
-    //removed for now
-    /*
-    void OnCollisionStay(Collision collisionInfo)
-    {
-        // Debug-draw all contact points and normals
-        foreach (ContactPoint contact in collisionInfo.contacts)
-        {
-            Debug.DrawRay(contact.point, contact.normal * 10, Color.white);
-        }
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        currentRoad =  collision.gameObject.GetComponent<Road>();
-    }
-
-    void OnCollisionExit(Collision collisionInfo)
-    {
-        currentRoad = null;
-    }
-    */
 }
