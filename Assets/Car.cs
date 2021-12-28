@@ -85,22 +85,80 @@ public class Car : MonoBehaviour
                         // if going right then you can go forward or turn 
 
                         // can only turn right or go straight
+                        //coming from the right of the tjunction
                         if (direction == -currentRoad.transform.right)
                         {
+                            if (currentRoad.transform.right == Vector3.forward)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                            }
+                            //bottom x row
+                            else if (currentRoad.transform.right == Vector3.right)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                            }
+                            //Left Z row
+                            else if (currentRoad.transform.right == Vector3.back)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                            }
+                            //top x row
+                            else if (currentRoad.transform.right == Vector3.left)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                            }
                             direction = currentRoad.transform.forward;
                         }
                         // can turn left and right
                         else if (direction == -currentRoad.transform.forward)
                         {
+                            //checking to see if the right of the road is facing in the direction of the global direction
+                            //going down x to turn left
+                            //right z row
+                            if (currentRoad.transform.right == Vector3.forward)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                            }
+                            //bottom x row
+                            else if (currentRoad.transform.right == Vector3.right)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                            }
+                            //Left Z row
+                            else if (currentRoad.transform.right == Vector3.back)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                            }
+                            //top x row
+                            else if (currentRoad.transform.right == Vector3.left)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                            }
+                            //transform.position = currentRoad.transform.position + new Vector3(1,0,0);
                             direction = currentRoad.transform.right;
                         }
-                        // can turn left and straight
-                        else if (direction == currentRoad.transform.forward)
-                        {
-                            direction = -currentRoad.transform.right;
-                        }
+                        //coming from the left of the T junction
                         else if (direction == currentRoad.transform.right)
                         {
+                            if (currentRoad.transform.right == Vector3.forward)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                            }
+                            //bottom x row
+                            else if (currentRoad.transform.right == Vector3.right)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                            }
+                            //Left Z row
+                            else if (currentRoad.transform.right == Vector3.back)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                            }
+                            //top x row
+                            else if (currentRoad.transform.right == Vector3.left)
+                            {
+                                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                            }
                             direction = currentRoad.transform.forward;
                         }
                         passRoad = currentRoad;
@@ -116,13 +174,13 @@ public class Car : MonoBehaviour
                         if (direction == -currentRoad.transform.right)
                         {
                             direction = currentRoad.transform.forward;
-                        } 
+                        }
                         // can turn left
                         else if (direction == -currentRoad.transform.forward)
                         {
                             direction = currentRoad.transform.right;
                         }
-                        passRoad = currentRoad;                 
+                        passRoad = currentRoad;
                     }
                 }
             }
@@ -130,9 +188,12 @@ public class Car : MonoBehaviour
 
         // checking if car is infront to slow down or stop
         RaycastHit carHit;
-        if (Physics.Raycast(transform.position+ carRayOffset, transform.forward, out carHit, followingDistance, layerMask))
+        if (Physics.Raycast(transform.position + carRayOffset, transform.forward, out carHit, followingDistance, layerMask))
         {
-            Debug.DrawRay(transform.position+ carRayOffset, transform.forward * carHit.distance, Color.red);
+            if (debug)
+            {
+                Debug.DrawRay(transform.position + carRayOffset, transform.forward * carHit.distance, Color.red);
+            }
             if (carHit.collider.gameObject.GetComponent<Car>() != null)
             {
                 if (currentCar != carHit.collider.gameObject.GetComponent<Car>())
@@ -143,7 +204,10 @@ public class Car : MonoBehaviour
         }
         else
         {
-            Debug.DrawRay(transform.position + carRayOffset, transform.forward * carHit.distance, Color.green);
+            if (debug)
+            {
+                Debug.DrawRay(transform.position + carRayOffset, transform.forward * carHit.distance, Color.green);
+            }
             currentCar = null;
         }
         if (currentCar != null)
@@ -168,13 +232,14 @@ public class Car : MonoBehaviour
         //checks if car is going in a certain direction
         // if the car is going in that direction it can choose to go straight or turn into the allowed directions
 
-        int random = Random.Range(0, 4);      
+        int random = Random.Range(0, 4);
 
         //left
         if (random == 0)
         {
             if (currentDirection != Vector3.left && currentDirection != Vector3.right)
             {
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
                 return Vector3.left;
             }
             else
@@ -187,6 +252,7 @@ public class Car : MonoBehaviour
         {
             if (currentDirection != Vector3.forward && currentDirection != Vector3.back)
             {
+                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
                 return Vector3.forward;
             }
             else
@@ -199,6 +265,7 @@ public class Car : MonoBehaviour
         {
             if (currentDirection != Vector3.right && currentDirection != Vector3.left)
             {
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
                 return Vector3.right;
             }
             else
@@ -211,6 +278,7 @@ public class Car : MonoBehaviour
         {
             if (currentDirection != Vector3.back && currentDirection != Vector3.forward)
             {
+                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
                 return Vector3.back;
             }
             else
