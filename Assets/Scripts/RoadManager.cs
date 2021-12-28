@@ -219,14 +219,12 @@ public class RoadManager : MonoBehaviour
                         road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Updated/tjunction"), block.transform);
                         road.transform.localPosition = new Vector3((blocksWidth - 1) * blockSize, 0, -(k * blockSize + 10) + blockSize);
                         road.transform.Rotate(new Vector3(0, 270, 0));
-                        Debug.Log(road.transform.position);
                     }
                     else if (currentBlockY == blocksY - 1)
                     {
                         road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Updated/corner"), block.transform);
                         road.transform.localPosition = new Vector3((blocksWidth - 1) * blockSize, 0, -(k * blockSize+10) + blockSize);
                         road.transform.Rotate(new Vector3(0, 180, 0));
-                        Debug.Log(road.transform.position);
                     }
                     else
                     {

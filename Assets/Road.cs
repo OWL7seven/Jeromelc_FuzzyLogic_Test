@@ -9,7 +9,7 @@ public class Road : MonoBehaviour
     [SerializeField]
     private List<Car> cars = new List<Car>();
     [SerializeField]
-    private int timer = 2;
+    private int timer = 3;
     [SerializeField]
     private int timerCounter;
 
@@ -75,7 +75,14 @@ public class Road : MonoBehaviour
             {
                 cars[0].Stop(false);
                 cars.Remove(cars[0]);
-                timerCounter = timer;
+                if (cars.Count > 2)
+                {
+                    timerCounter = timer * 2;
+                }
+                else 
+                {
+                    timerCounter = timer;
+                };
             }
         }
     }

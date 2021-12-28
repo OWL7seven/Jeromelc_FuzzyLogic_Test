@@ -23,6 +23,9 @@ public class CarManager : MonoBehaviour
     [SerializeField]
     private int truckCount = 10;
     [SerializeField]
+    private int superCarkCount = 5;
+    [SerializeField]
+
 
     // Spawn cars on start
     void Start()
@@ -43,7 +46,7 @@ public class CarManager : MonoBehaviour
         {
             Car car = Instantiate<Car>(Resources.Load<Car>("Prefabs/Cars/Car"));
             cars.Add(car);
-            car.SetSpeed(Random.Range(0.1f,0.5f));
+            car.SetSpeed(Random.Range(0.1f,0.3f));
             if (randomLocations)
             {
                 AddRandom(road,car);
@@ -53,7 +56,7 @@ public class CarManager : MonoBehaviour
         {
             Car car = Instantiate<Car>(Resources.Load<Car>("Prefabs/Cars/Bus"));
             cars.Add(car);
-            car.SetSpeed(Random.Range(0.125f, 0.2f));
+            car.SetSpeed(Random.Range(0.1f, 0.2f));
             if (randomLocations)
             {
                 AddRandom(road, car);
@@ -64,6 +67,16 @@ public class CarManager : MonoBehaviour
             Car car = Instantiate<Car>(Resources.Load<Car>("Prefabs/Cars/Truck"));
             cars.Add(car);
             car.SetSpeed(Random.Range(0.05f, 0.1f));
+            if (randomLocations)
+            {
+                AddRandom(road, car);
+            }
+        }
+        for (int i = 0; i < superCarkCount; i++)
+        {
+            Car car = Instantiate<Car>(Resources.Load<Car>("Prefabs/Cars/SuperCar"));
+            cars.Add(car);
+            car.SetSpeed(Random.Range(0.3f, 0.5f));
             if (randomLocations)
             {
                 AddRandom(road, car);

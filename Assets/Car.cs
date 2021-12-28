@@ -41,20 +41,35 @@ public class Car : MonoBehaviour
     [SerializeField]
     private bool stop;
 
+    private AudioSource audio;
+
     private void Awake()
     {
         collider = this.GetComponent<MeshCollider>();
         rigidbody = this.GetComponent<Rigidbody>();
+        audio = this.GetComponent<AudioSource>();
     }
 
     public void SetSpeed(float value)
     {
         speed = value;
+        audio.pitch = 1 * value;
     }
 
     public void Stop(bool value)
     {
         stop = value;
+        if (audio != null)
+        {
+            if (value)
+            {
+                audio.Stop();
+            }
+            else
+            {
+                audio.Play();
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -106,22 +121,48 @@ public class Car : MonoBehaviour
                             //coming from the right of the tjunction
                             if (direction == -currentRoad.transform.right)
                             {
-                                AddLaneOffset(false);
-                                direction = currentRoad.transform.forward;
+                              
+                                int random = Random.Range(0, 2);
+                                if (random == 0)
+                                {
+                                    AddLaneOffset(false, false);
+                                    direction = currentRoad.transform.forward;
+                                }
+                                else
+                                {
+                                    AddLaneOffset(false, true);
+                                }
                             }
                             else if (direction == -currentRoad.transform.forward)
-                            {
-                                AddLaneOffset(true);
-                                direction = currentRoad.transform.right;
+                            {                                
+                                int random = Random.Range(0, 2);
+                                if (random == 0)
+                                {
+                                    AddLaneOffset(true, false);
+                                    direction = currentRoad.transform.right;
+                                }
+                                else
+                                {
+                                    AddLaneOffset(false, true);
+                                    direction = -currentRoad.transform.right;
+                                }
                             }
                             else if (direction == currentRoad.transform.right)
                             {
-                                AddLaneOffset(false);
-                                direction = currentRoad.transform.forward;
+                                int random = Random.Range(0, 2);
+                                if (random == 0)
+                                {
+                                    AddLaneOffset(false, false);
+                                    direction = currentRoad.transform.forward;
+                                }
+                                else
+                                {
+                                    AddLaneOffset(true, false);
+                                }
                             }
                             else if (direction == currentRoad.transform.forward)
                             {
-                                AddLaneOffset(false);
+                                AddLaneOffset(false, false);
                                 direction = -currentRoad.transform.right;
                             }
                             passRoad = currentRoad;
@@ -135,22 +176,22 @@ public class Car : MonoBehaviour
                         {
                             if (direction == -currentRoad.transform.right)
                             {
-                                AddLaneOffset(false);
+                                AddLaneOffset(false, false);
                                 direction = currentRoad.transform.forward;
                             }
                             else if (direction == -currentRoad.transform.forward)
                             {
-                                AddLaneOffset(true);
+                                AddLaneOffset(true, false);
                                 direction = currentRoad.transform.right;
                             }
                             else if (direction == currentRoad.transform.right)
                             {
-                                AddLaneOffset(false);
+                                AddLaneOffset(false, false);
                                 direction = currentRoad.transform.forward;
                             }
                             else if (direction == currentRoad.transform.forward)
                             {
-                                AddLaneOffset(false);
+                                AddLaneOffset(false,false);
                                 direction = currentRoad.transform.right;
                             }
                             passRoad = currentRoad;
@@ -202,44 +243,66 @@ public class Car : MonoBehaviour
         }
     }
 
-    private void AddLaneOffset(bool invert)
+    private void AddLaneOffset(bool invert,bool junction)
     {
-        if (!invert)
+        if (!junction)
         {
-            if (currentRoad.transform.right == Vector3.forward)
+            if (!invert)
             {
-                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                if (currentRoad.transform.right == Vector3.forward)
+                {
+                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                }
+                else if (currentRoad.transform.right == Vector3.right)
+                {
+                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                }
+                else if (currentRoad.transform.right == Vector3.back)
+                {
+                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                }
+                else if (currentRoad.transform.right == Vector3.left)
+                {
+                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                }
             }
-            else if (currentRoad.transform.right == Vector3.right)
+            else
             {
-                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
-            }
-            else if (currentRoad.transform.right == Vector3.back)
-            {
-                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
-            }
-            else if (currentRoad.transform.right == Vector3.left)
-            {
-                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                if (currentRoad.transform.right == Vector3.forward)
+                {
+                    transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                }
+                else if (currentRoad.transform.right == Vector3.right)
+                {
+                    transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                }
+                else if (currentRoad.transform.right == Vector3.back)
+                {
+                    transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                }
+                else if (currentRoad.transform.right == Vector3.left)
+                {
+                    transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                }
             }
         }
-        else 
+        else
         {
             if (currentRoad.transform.right == Vector3.forward)
             {
-                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
+                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
             }
             else if (currentRoad.transform.right == Vector3.right)
             {
-                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
             }
             else if (currentRoad.transform.right == Vector3.back)
             {
-                transform.position = currentRoad.transform.position + new Vector3(1, 0, 0);
+                transform.position = currentRoad.transform.position + new Vector3(-1, 0, 0);
             }
             else if (currentRoad.transform.right == Vector3.left)
             {
-                transform.position = currentRoad.transform.position + new Vector3(0, 0, -1);
+                transform.position = currentRoad.transform.position + new Vector3(0, 0, 1);
             }
         }
     }
