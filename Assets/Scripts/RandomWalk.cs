@@ -37,16 +37,19 @@ public class RandomWalk : MonoBehaviour
 
     private void Walk()
     {
-        if (agent.isOnNavMesh)
-        {    
-            if (agent.pathPending || agent.remainingDistance > minDistance)
+        if (agent != null)
+        {
+            if (agent.isOnNavMesh)
             {
-                return;
-            }
+                if (agent.pathPending || agent.remainingDistance > minDistance)
+                {
+                    return;
+                }
 
-            targetPosition = agent.destination;
-            targetdistance = agent.remainingDistance;
-            agent.destination = RandomNavmeshLocation(range);
+                targetPosition = agent.destination;
+                targetdistance = agent.remainingDistance;
+                agent.destination = RandomNavmeshLocation(range);
+            }
         }
     }
     private Vector3 RandomNavmeshLocation(float radius)

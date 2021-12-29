@@ -10,4 +10,33 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;  
     }
+    public delegate void OnFixedUpdate();
+
+    public static OnFixedUpdate onFixedUpdate;
+
+    public delegate void OnUpdate();
+
+    public static OnUpdate onUpdate;
+
+    public delegate void OnInvokedUpdate();
+
+    public static OnInvokedUpdate onInvokedUpdate;
+
+    private void Update()
+    {
+        onUpdate?.Invoke();
+    }
+    private void FixedUpdate()
+    {
+        onFixedUpdate?.Invoke();
+    }
+
+    private void UpdateOncePerFrame()
+    {
+        onInvokedUpdate?.Invoke();
+    }
+    private void OnEnable()
+    {
+        InvokeRepeating("UpdateOncePerFrame", 0, 1);
+    }
 }
