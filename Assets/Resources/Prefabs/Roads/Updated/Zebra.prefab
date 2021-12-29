@@ -1,5 +1,49 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3416695120641575442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6769389754980911851}
+  - component: {fileID: 3499019715917167037}
+  m_Layer: 7
+  m_Name: walkway
+  m_TagString: Crossing
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6769389754980911851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3416695120641575442}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5651829383233007285}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3499019715917167037
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3416695120641575442}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 0.25, z: 12}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8786745043576783564
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7,6 +51,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 99955159991464165, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+      propertyPath: Collider
+      value: 
+      objectReference: {fileID: 2739278552302467051}
     - target: {fileID: 1128502875633980658, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -18,6 +66,14 @@ PrefabInstance:
     - target: {fileID: 2948177511132195783, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
       propertyPath: m_Name
       value: Zebra
+      objectReference: {fileID: 0}
+    - target: {fileID: 2948177511132195783, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2948177511132195783, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+      propertyPath: m_TagString
+      value: Crossing
       objectReference: {fileID: 0}
     - target: {fileID: 4008096951322438777, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
       propertyPath: m_RootOrder
@@ -66,6 +122,18 @@ PrefabInstance:
     - target: {fileID: 6913893236432188711, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6913893236432188711, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6913893236432188711, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6913893236432188711, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8703812290625331620, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
       propertyPath: m_Mesh
@@ -7981,3 +8049,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+--- !u!4 &5651829383233007285 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4008096951322438777, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+  m_PrefabInstance: {fileID: 8786745043576783564}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &2739278552302467051 stripped
+MeshCollider:
+  m_CorrespondingSourceObject: {fileID: 6913893236432188711, guid: 4f408f8d9570d3342846ba97c476b40b, type: 3}
+  m_PrefabInstance: {fileID: 8786745043576783564}
+  m_PrefabAsset: {fileID: 0}

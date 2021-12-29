@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1128502875633980658}
   - component: {fileID: 6913893236432188711}
   - component: {fileID: 99955159991464165}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Straight
   m_Icon: {fileID: 0}
@@ -1924,7 +1924,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!114 &99955159991464165
@@ -1940,4 +1940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   location: {x: 0, y: 0}
+  cars: []
+  timer: 2
+  timerCounter: 0
   Collider: {fileID: 6913893236432188711}
