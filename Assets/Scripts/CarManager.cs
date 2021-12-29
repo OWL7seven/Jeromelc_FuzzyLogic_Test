@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CarManager : MonoBehaviour
 {
@@ -31,6 +32,35 @@ public class CarManager : MonoBehaviour
     void Start()
     {
         Invoke("RespawnCar",1);
+        UIManager.Instance.carInputField.onValueChanged.AddListener(delegate { XValueChange(int.Parse(UIManager.Instance.carInputField.text)); });
+        UIManager.Instance.busInputField.onValueChanged.AddListener(delegate { YValueChange(int.Parse(UIManager.Instance.busInputField.text)); });
+
+        UIManager.Instance.truckInputField.onValueChanged.AddListener(delegate { XWValueChange(int.Parse(UIManager.Instance.truckInputField.text)); });
+        UIManager.Instance.superCarInputField.onValueChanged.AddListener(delegate { YHValueChange(int.Parse(UIManager.Instance.superCarInputField.text)); });
+
+        UIManager.Instance.carInputField.placeholder.gameObject.GetComponent<TextMeshProUGUI>().text = carCount.ToString();
+        UIManager.Instance.busInputField.placeholder.gameObject.GetComponent<TextMeshProUGUI>().text = busCount.ToString();
+        UIManager.Instance.truckInputField.placeholder.gameObject.GetComponent<TextMeshProUGUI>().text = truckCount.ToString();
+        UIManager.Instance.superCarInputField.placeholder.gameObject.GetComponent<TextMeshProUGUI>().text = superCarkCount.ToString();
+    }
+
+    // Invoked when the value of the text field changes.
+    public void XValueChange(int value)
+    {
+        carCount = value;
+    }
+    public void YValueChange(int value)
+    {
+        busCount = value;
+    }
+
+    public void XWValueChange(int value)
+    {
+        truckCount = value;
+    }
+    public void YHValueChange(int value)
+    {
+        superCarkCount = value;
     }
 
     // Respawn cars during runtime
@@ -39,6 +69,7 @@ public class CarManager : MonoBehaviour
         var road = RoadManager.Instance.GetRoads();
         foreach (Car car in cars)
         {
+            GameManager.onFixedUpdate -= car.gameObject.GetComponent<Car>().CarFixedUpdate;
             Destroy(car.gameObject);
         }
         cars.Clear();
@@ -101,6 +132,14 @@ public class CarManager : MonoBehaviour
             AddRandom(road, car);
         }
         else if (currentRoad.gameObject.tag == "Junction")
+        {
+            AddRandom(road, car);
+        }
+        else if (currentRoad.gameObject.tag == "Pavement")
+        {
+            AddRandom(road, car);
+        }
+        else if (currentRoad.gameObject.tag == "Crossing")
         {
             AddRandom(road, car);
         }

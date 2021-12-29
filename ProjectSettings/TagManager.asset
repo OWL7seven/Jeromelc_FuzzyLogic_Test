@@ -10,6 +10,11 @@ TagManager:
   - Straight
   - TJunction
   - Crossing
+  - Car
+  - Pedestrian
+  - Pavement
+  - Road
+  - Spawn
   layers:
   - Default
   - TransparentFX
@@ -17,8 +22,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Road
+  - Crossing
   - 
   - 
   - 
