@@ -1,3 +1,6 @@
+/*
+ * This code is part of Jerome Chetty Summision for FuzzyLogic first stage 2021
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

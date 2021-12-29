@@ -1,5 +1,5 @@
 /*
- * This code is part of Jerome Chetty Summision for ITTYHNK GameJam 2021
+ * This code is part of Jerome Chetty Summision for FuzzyLogic first stage 2021
  */
 using UnityEngine.AI;
 using UnityEngine;
