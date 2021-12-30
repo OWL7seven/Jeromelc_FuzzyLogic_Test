@@ -34,7 +34,12 @@ public class CarManager : MonoBehaviour
     // Spawn cars on start
     void Start()
     {
-        Invoke("RespawnCar",1);
+        Invoke("RespawnCar", 1);
+        AssignUi();
+    }
+
+    private void AssignUi()
+    {
         UIManager.Instance.carInputField.onValueChanged.AddListener(delegate { XValueChange(int.Parse(UIManager.Instance.carInputField.text)); });
         UIManager.Instance.busInputField.onValueChanged.AddListener(delegate { YValueChange(int.Parse(UIManager.Instance.busInputField.text)); });
 
@@ -118,38 +123,19 @@ public class CarManager : MonoBehaviour
         }
     }
 
+    //Adds a car to a random road. but if the random road is anything but straight restart
     private void AddRandom(List<Road> road,Car car)
     {
         Road currentRoad = road[(Random.Range(0, road.Count - 1))];
         car.SetRoad(currentRoad);
-        if (currentRoad.gameObject.tag == "Fourway")
-        {
-            AddRandom(road, car);
-        }
-        else if (currentRoad.gameObject.tag == "TJunction")
-        {
-            AddRandom(road, car);
-        }
-        else if (currentRoad.gameObject.tag == "Corner")
-        {
-            AddRandom(road, car);
-        }
-        else if (currentRoad.gameObject.tag == "Junction")
-        {
-            AddRandom(road, car);
-        }
-        else if (currentRoad.gameObject.tag == "Pavement")
-        {
-            AddRandom(road, car);
-        }
-        else if (currentRoad.gameObject.tag == "Crossing")
-        {
-            AddRandom(road, car);
-        }
-        else 
+        if (currentRoad.gameObject.tag == "Straight")
         {
             car.transform.position = currentRoad.transform.position;
             car.SetPosition();
-        }       
+        }
+        else 
+        {
+            AddRandom(road, car);
+        }
     }
 }

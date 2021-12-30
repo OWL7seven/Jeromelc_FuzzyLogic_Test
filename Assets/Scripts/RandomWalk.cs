@@ -50,6 +50,11 @@ public class RandomWalk : MonoBehaviour
                 targetdistance = agent.remainingDistance;
                 agent.destination = RandomNavmeshLocation(range);
             }
+            else
+            {
+                agent.enabled = false;
+                agent.enabled = true;
+            }
         }
     }
     private Vector3 RandomNavmeshLocation(float radius)

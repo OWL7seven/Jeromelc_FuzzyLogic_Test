@@ -15,6 +15,9 @@ public class Road : MonoBehaviour
     private int timer = 3;
     [SerializeField]
     private int timerCounter;
+    [SerializeField]
+    private List<BoxCollider> walkColliders;
+
 
     public Vector2 GetLocation()
     {
@@ -118,6 +121,8 @@ public class Road : MonoBehaviour
             }
         }
     }
+
+    // Adds or removes a pedestrain from the list which the car uses to decide whether it can move or not
     public void AddPed(Pedestrian ped, bool add)
     {
         if (add)
@@ -129,17 +134,22 @@ public class Road : MonoBehaviour
             peds.Remove(ped);
         }
     }
-
-    private void Start()
+    void Start()
     {
         Invoke("RemoveCollider", 1);
     }
 
+    //removes colliders which are used to create the navmesh at the start of runtime
     private void RemoveCollider()
     {
+        foreach (var obj in GetComponentsInChildren<BoxCollider>())
+        {
+            Destroy(obj.gameObject);
+        }
         if (gameObject.tag == "Crossing")
         {
-            Destroy(transform.GetChild(0).gameObject);
+            BoxCollider boxCollider = gameObject.AddComponent<BoxCollider>();
+            boxCollider.size = new Vector3(10, 0.1f, 5);
         }
     }
 }

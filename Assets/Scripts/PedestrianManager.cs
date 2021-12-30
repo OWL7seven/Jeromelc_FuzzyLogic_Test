@@ -41,6 +41,9 @@ public class PedestrianManager : MonoBehaviour
     [SerializeField]
     private int numberOfPedPrefabs = 3;
 
+    [SerializeField]
+    private NavMeshSurface navMesh;
+
     private void Start()
     {
         if (randomSpawn)
@@ -59,6 +62,11 @@ public class PedestrianManager : MonoBehaviour
             SpawnLocations();
         }
 
+        AssignUi();
+    }
+
+    private void AssignUi()
+    {
         UIManager.Instance.pedestriansInputField.onValueChanged.AddListener(delegate { ValueChange(int.Parse(UIManager.Instance.pedestriansInputField.text)); });
         UIManager.Instance.pedestriansInputField.placeholder.gameObject.GetComponent<TextMeshProUGUI>().text = numberOfPeds.ToString();
     }
@@ -75,6 +83,8 @@ public class PedestrianManager : MonoBehaviour
         for (int i = 0; i < numberOfPeds; i++)
         {
             NavMeshAgent agent = Instantiate(Resources.Load<NavMeshAgent>($"Prefabs/Pedestrians/Passenger_0{Random.Range(1, numberOfPedPrefabs + 1)}"));
+            NavMeshHit hit;
+            agent.transform.position = RandomNavmeshLocation(RoadManager.Instance.GetSize());
             RandomWalk walk = agent.gameObject.AddComponent<RandomWalk>();
             walk.randomLocation = randomSpawn;
             walk.minDistance = 1;
@@ -83,7 +93,6 @@ public class PedestrianManager : MonoBehaviour
             Pedestrian ped = agent.gameObject.AddComponent<Pedestrian>();
             ped.agent = agent;
             ped.randomWalk = walk;
-            ped.animator = agent.gameObject.GetComponentInChildren<Animator>();
             agents.Add(agent);
         }
     }
@@ -99,7 +108,18 @@ public class PedestrianManager : MonoBehaviour
             }
         }
     }
-
+    private Vector3 RandomNavmeshLocation(float radius)
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * radius;
+        randomDirection += transform.position;
+        NavMeshHit hit;
+        Vector3 finalPosition = Vector3.zero;
+        if (NavMesh.SamplePosition(randomDirection, out hit, radius, 1))
+        {
+            finalPosition = hit.position;
+        }
+        return finalPosition;
+    }
     //Create Pedestiran
     private void AddPedestrian(Transform spawn)
     {
@@ -116,7 +136,6 @@ public class PedestrianManager : MonoBehaviour
         Pedestrian ped = agent.gameObject.AddComponent<Pedestrian>();
         ped.agent = agent;
         ped.randomWalk = walk;
-        ped.animator = agent.gameObject.GetComponentInChildren<Animator>();
 
         agents.Add(agent);
     }
@@ -138,4 +157,23 @@ public class PedestrianManager : MonoBehaviour
             SpawnLocations();
         }
     }
+}
+// used to find random location on the nav mesh to spawn the pedestrians
+public static class NavMeshUtil
+{
+
+    // Get Random Point on a Navmesh surface
+    public static Vector3 GetRandomPoint(Vector3 center, float maxDistance)
+    {
+        // Get Random Point inside Sphere which position is center, radius is maxDistance
+        Vector3 randomPos = Random.insideUnitSphere * maxDistance + center;
+
+        NavMeshHit hit; // NavMesh Sampling Info Container
+
+        // from randomPos find a nearest point on NavMesh surface in range of maxDistance
+        NavMesh.SamplePosition(randomPos, out hit, maxDistance, NavMesh.AllAreas);
+
+        return hit.position;
+    }
+
 }

@@ -16,12 +16,23 @@ public class RoadManager : MonoBehaviour
         Instance = this;
     }
 
-    //Add to start manager
-    //startManager.instance.OnStart += Start();
+    //random angles for the buildings
+    private List<int> angles = new List<int>()
+    {
+        0,
+        90,
+        180,
+        270
+    };
 
     private void Start()
     {
         Build();
+        AssignUi();
+    }
+
+    private void AssignUi()
+    {
         UIManager.Instance.blocksXInputField.onValueChanged.AddListener(delegate { XValueChange(UIManager.Instance.blocksXInputField.text); });
         UIManager.Instance.blocksYInputField.onValueChanged.AddListener(delegate { YValueChange(UIManager.Instance.blocksYInputField.text); });
 
@@ -82,6 +93,11 @@ public class RoadManager : MonoBehaviour
     [SerializeField]
     private NavMeshSurface navMesh;
 
+    public float GetSize()
+    {
+        return blocksX + blocksY + blocksWidth + blocksHeight;
+    }
+
 
     public List<Road> GetRoads()
     {
@@ -93,26 +109,8 @@ public class RoadManager : MonoBehaviour
         roads.Remove(road);
     }
 
-    //Testing
     private void Build()
     {
-        //Build 2 block like example
-        //each block is 4 blocks wide.
-        //1 corner (dynamic) - checks at runtime what road block to be
-        //1 junction (dynamic)
-        // 2 straights
-
-        //if dynamic then blocks are just placed down. making generating something easier
-        // int number of blocks wide
-        // int number of blocks high
-
-        //depending on above the corners will dynamically change to the prefab that fits.
-        //will need to create a system that will add zebra crossing, junctions, and t junctions
-        //must have 2 or more blocks to work
-
-        //clear navmesh to remove previous instances
-        // navMesh.Clear();
-
         for (int i = 0; i < blocksX; i++)
         {
             currentBlockX = i;
@@ -155,7 +153,7 @@ public class RoadManager : MonoBehaviour
             }
             else if (k == (blocksHeight / 2) - 1)
             {
-                if (currentBlockY != 0)
+                if (true)
                 {
                     road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Updated/Zebra"), block.transform);
                 }
@@ -225,7 +223,7 @@ public class RoadManager : MonoBehaviour
             }
             else if (k == (blocksHeight / 2) - 1)
             {
-                if (position.x != 0)
+                if (true)
                 {
                     road = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Updated/Zebra"), block.transform);
                     road.transform.localPosition = new Vector3(0, 0, -(k * blockSize + 10));
@@ -350,11 +348,13 @@ public class RoadManager : MonoBehaviour
 
         block.transform.position = position;
         // areas for pedestrians to spawn and walk from
-        Road pav = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Updated/Pavement"));
-        pav.transform.position = position + new Vector3(((blocksWidth - 1) * blockSize) / 2, 0, -((blocksHeight - 1) * blockSize) / 2);
-        pav.name = $"({pav.transform.position.x},{pav.transform.position.z})";
-        roads.Add(pav);
-        pav.transform.localScale = new Vector3(blocksWidth - 2, 0, blocksHeight - 2);
+        Road building = Instantiate<Road>(Resources.Load<Road>("Prefabs/Roads/Updated/buildings"));
+        building.transform.position = position + new Vector3(((blocksWidth - 1) * blockSize) / 2, 0, -((blocksHeight - 1) * blockSize) / 2);
+        building.name = $"({building.transform.position.x},{building.transform.position.z})";
+        roads.Add(building);
+        building.transform.localScale = new Vector3(blocksWidth - 2, 2, blocksHeight - 2);
+
+        building.transform.localRotation = new Quaternion(0, angles[Random.Range(0, angles.Count)],0,0);
         var blockRoads = block.GetComponentsInChildren<Road>();
         foreach (Road road in blockRoads)
         {

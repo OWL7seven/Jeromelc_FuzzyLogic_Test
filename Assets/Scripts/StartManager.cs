@@ -13,4 +13,19 @@ public class StartManager : MonoBehaviour
     {
         Instance = this;
     }
+
+    //used to manager all start related objects
+    public delegate void OnStart();
+    public static OnStart onStart;
+
+    private void Start()
+    {
+        Invoke("InvokedStart",1);
+    }
+
+    private void InvokedStart()
+    {
+        onStart.Invoke();
+    }
+
 }

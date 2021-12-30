@@ -13,16 +13,16 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;  
     }
+    //used to manager all fixed update related objects
     public delegate void OnFixedUpdate();
-
     public static OnFixedUpdate onFixedUpdate;
 
+    //used to manager all normal update related objects
     public delegate void OnUpdate();
-
     public static OnUpdate onUpdate;
 
+    //used to manager all invoked by 1 second related objects
     public delegate void OnInvokedUpdate();
-
     public static OnInvokedUpdate onInvokedUpdate;
 
     private void Update()

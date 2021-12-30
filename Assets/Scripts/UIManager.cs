@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
         Instance = this;
     }
 
+    //All UI related objects
+
     public TMP_InputField blocksXInputField;
     public TMP_InputField blocksYInputField;
 

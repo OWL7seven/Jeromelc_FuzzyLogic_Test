@@ -120,14 +120,14 @@ public class Car : MonoBehaviour
                         if (currentRoad.gameObject.tag == "TJunction")
                         {
                             // the road is facing towards Z
-                            // if the turning is facing the -Z axis of the road then 
+                            // if the turning is facing the -Z axis of the road 
 
                             // so if you going in a left direction you allowed to continue or go forward direction.
                             // if you going backwards compared to the Tjunction you can turn left of right
                             // if going right then you can go forward or turn 
 
                             // can only turn right or go straight
-                            //coming from the right of the tjunction
+                            // coming from the right of the tjunction
                             if (direction == -currentRoad.transform.right)
                             {
                               
@@ -252,6 +252,7 @@ public class Car : MonoBehaviour
         }
     }
 
+    //addes an offest based off where the car is and which road object its driving on
     private void AddLaneOffset(bool invert,bool junction)
     {
         if (!junction)
@@ -316,11 +317,10 @@ public class Car : MonoBehaviour
         }
     }
 
+    //checks if car is going in a certain direction
+    // if the car is going in that direction it can choose to go straight or turn into the allowed directions
     private Vector3 RandomDirection(Vector3 currentDirection)
     {
-        //checks if car is going in a certain direction
-        // if the car is going in that direction it can choose to go straight or turn into the allowed directions
-
         int random = Random.Range(0, 4);
 
         //left
@@ -379,6 +379,7 @@ public class Car : MonoBehaviour
         return currentDirection;
     }
 
+    //places a car on a straight road in the correct angle
     public void SetPosition()
     {
          if (currentRoad.gameObject.tag == "Straight")

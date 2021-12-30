@@ -13,7 +13,6 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     private int timerCounter;
 
-    // Start is called before the first frame update
     void Start()
     {
         Vector3 position;
