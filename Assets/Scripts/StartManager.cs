@@ -25,7 +25,7 @@ public class StartManager : MonoBehaviour
 
     private void InvokedStart()
     {
-        onStart.Invoke();
+        //onStart.Invoke();
     }
 
 }

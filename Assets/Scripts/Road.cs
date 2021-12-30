@@ -12,7 +12,7 @@ public class Road : MonoBehaviour
     [SerializeField]
     private List<Car> cars = new List<Car>();
     [SerializeField]
-    private int timer = 3;
+    private int timer = 5;
     [SerializeField]
     private int timerCounter;
     [SerializeField]
