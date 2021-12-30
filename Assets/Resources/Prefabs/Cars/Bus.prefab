@@ -63,7 +63,7 @@ MonoBehaviour:
   rayOffset: {x: 0, y: 0.5, z: 0}
   turnDistance: 1.5
   currentTurnDistance: 0
-  followingDistance: 2
+  followingDistance: 4
   carRayOffset: {x: 0, y: 0.1, z: 0}
   debug: 0
   stop: 0
