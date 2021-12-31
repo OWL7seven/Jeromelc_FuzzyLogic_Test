@@ -56,5 +56,11 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-
+    public void CycleCamera()
+    {
+        int value = Random.Range(0, locations.Count);
+        Camera.main.transform.position = locations[value];
+        Camera.main.transform.rotation = Quaternion.Slerp(Camera.main.transform.rotation, Quaternion.Euler(rotations[value]), 1);
+        timerCounter = timer;
+    }
 }
